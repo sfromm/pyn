@@ -66,7 +66,7 @@ def main(args):
         )
     for i in range(0, int(options.count)):
         host, port = options.host.split(':')
-        xlabels.append( datetime.datetime.now().minute )
+        xlabels.append( str(datetime.datetime.now().minute) )
         for name, oid in OIDS.iteritems():
             if name not in data:
                 data[name] = []
