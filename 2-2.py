@@ -14,8 +14,7 @@ import pprint
 import pygal
 
 # HARD CODE IT!  :P
-OIDS = {'ifDescr'          : '1.3.6.1.2.1.2.2.1.2',
-        'ifHCInOctets'     : '1.3.6.1.2.1.31.1.1.1.6',
+OIDS = {'ifHCInOctets'     : '1.3.6.1.2.1.31.1.1.1.6',
         'ifHCOutOctets'    : '1.3.6.1.2.1.31.1.1.1.10',
         'ifHCInUcastPkts'  : '1.3.6.1.2.1.31.1.1.1.7',
         'ifHCOutUcastPkts' : '1.3.6.1.2.1.31.1.1.1.11'}
@@ -36,7 +35,7 @@ def get_host_oid_v3(snmpdev, snmpuser, oid):
     '''
     return snmp_extract( snmp_get_oid_v3(snmpdev, snmpuser, oid=oid) )
 
-def line_chart(title, xlabels, datapoints, path):
+def line_graph(title, xlabels, datapoints, path):
     line_chart = pygal.Line()
     line_chart.title = title
     line_chart.x_labels = xlabels
@@ -48,34 +47,43 @@ def main(args):
     ''' main '''
     parser = OptionParser()
     parser.add_option('-I', '--index', default=5, help='index')
-    parser.add_option('-i', '--interval', default=300, help='interval')
+    parser.add_option('-i', '--interval', type='int', default=300, help='interval')
     parser.add_option('-c', '--count', default=12, help='count')
+    parser.add_option('-C', '--community', default='public', help='community string')
     parser.add_option('--host', help='host:port')
     parser.add_option('-D', '--debug', action='store_true', help='be verbose')
     options, args = parser.parse_args()
 
     data = {}
     xlabels = []
-    last = None
-
-    for i in range(0, options.count):
-        host, port = options.host.split(':')
-        data = []
-        if options.debug:
-            print "querying %s" % arg
-        xlabels.append( datetime.datetime.now().minute )
-        for name, oid in OIDS.iteritems():
-            val = get_host_oid( (host, port), snmp_user,
-                                "%s.%s" % (OIDS[name], options.index))
-            if last is None:
-                last = val
-            else:
-                data[name].append(val - last)
-                last = val
-        time.sleep(options.interval)
+    last = {}
+    for n in OIDS.keys():
+        last[n] = None
 
     if options.debug:
-        pprint.pprint(data)
+        print "querying %s, interval=%s, count=%s" % (
+            options.host, options.interval, options.count
+        )
+    for i in range(0, int(options.count)):
+        host, port = options.host.split(':')
+        xlabels.append( datetime.datetime.now().minute )
+        for name, oid in OIDS.iteritems():
+            if name not in data:
+                data[name] = []
+            val = get_host_oid( (host, options.community, port), 
+                                "%s.%s" % (OIDS[name], options.index))
+            val = int(val)
+            if options.debug:
+                print "%s=%s" % (name, val)
+            if last[name] is None:
+                last[name] = val
+            else:
+                data[name].append(int(val) - last[name])
+                last[name] = val
+        if options.debug:
+            print datetime.datetime.now()
+            pprint.pprint(data)
+        time.sleep(options.interval)
 
     line_graph('Input/Output Bandwidth', xlabels,
                {'Input'  : data['ifHCInOctets'],
