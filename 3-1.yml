@@ -1,0 +1,7 @@
+---
+- hosts: switches
+  connection: local
+
+  tasks:
+      - name: generate config
+        template: src=access-switch.j2 dest=/tmp/access-switch-{{inventory_hostname}}.txt

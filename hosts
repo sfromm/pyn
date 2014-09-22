@@ -1,0 +1,13 @@
+[switches]
+pyn-sw1 ip_addr=10.10.0.5
+pyn-sw2 ip_addr=10.10.0.10 snmpv3=yes
+pyn-sw3 ip_addr=10.10.0.15 snmpv3=yes
+pyn-sw4 ip_addr=10.10.0.20
+pyn-sw5 ip_addr=10.10.0.25
+
+[switches:vars]
+access_vlan=10
+secret=foobarbaz
+default_gateway=10.10.0.1
+snmp_community=public
+ifcount=24
