@@ -26,7 +26,7 @@ def main(args):
         response = request.runCmds(1, ["show interfaces"] )
         if options.debug:
             print json.dumps(response, indent=4, sort_keys=True)
-        interfaces = response[0]['interfaces'].keys().sort()
+        interfaces = sorted(response[0]['interfaces'].keys())
         print "Switch {0} interfaces:".format(switch)
         print "{:20} {:<20} {:<20}".format("Interface", "inOctets", "outOctets")
         for inf in interfaces:
