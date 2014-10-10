@@ -10,7 +10,7 @@ def main(args):
     ''' main '''
     parser = OptionParser()
     parser.add_option('-u', '--username', default='eapi', help='username')
-    parser.add_option('-p', '--password', default='foo', help='password')
+    parser.add_option('-p', '--password', default='', help='password')
     parser.add_option('-P', '--port', default='8543', help='port')
     options, args = parser.parse_args()
 
