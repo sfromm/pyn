@@ -20,7 +20,7 @@ def main(args):
         vty_svc = VtyService(ndev.net_element)
         vty_svc.open()
         for cmd in CMDS:
-            out = vty_service.write(cmd)
+            out = vty_svc.write(cmd)
             print out
 
         ndev.disconnect()
