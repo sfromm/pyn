@@ -6,7 +6,7 @@ import sys
 
 def main(args):
     ''' main '''
-    rtrs = yaml.load(args[0])
+    rtrs = yaml.load(file(args[0]).read())
     for rtr in rtrs:
         ndev = NetworkDevice(**rtr)
         ndev.connect()
