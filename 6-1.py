@@ -14,6 +14,7 @@ def main(args):
         print "Connection established to: %s" % ndev.net_element.properties.sys_name
         print ndev.net_element.properties.product_id
         print ndev.net_element.properties.SerialNo
+        ndev.disconnect()
 
 if __name__ == '__main__':
     try:
