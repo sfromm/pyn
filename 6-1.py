@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+''' print generic info about device '''
+
 from onepk_helper import NetworkDevice
 import yaml
 import sys
