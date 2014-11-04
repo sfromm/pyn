@@ -2,6 +2,7 @@
 
 import onepk_helper
 import yaml
+import sys
 
 def main(args):
     ''' main '''
