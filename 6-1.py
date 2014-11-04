@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import onepk_helper
+from onepk_helper import NetworkDevice
 import yaml
 import sys
 
